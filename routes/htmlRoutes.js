@@ -28,6 +28,7 @@ module.exports = function (app) {
     res.render("404");
   });
 */
+//Added the route to the resume.handlebars file
   app.get("/resume", function(req, res){
     res.render("resume", { title: "ofCourse"});
   });

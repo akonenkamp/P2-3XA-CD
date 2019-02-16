@@ -24,6 +24,7 @@ module.exports = function (app) {
     });
   });
 
+  //Create a Resume with data input from document body
   app.post("/api/resume", function(req, res) {
     console.log("Resume Data: ");
     console.log(req.body);
@@ -33,6 +34,7 @@ module.exports = function (app) {
     });
   });
 
+  //Find a Resume based on the name of the person writing it
   app.get("/api/resume/:username", function(req, res){
     db.Resume.findOne({
       where:{
@@ -42,4 +44,11 @@ module.exports = function (app) {
       res.json(foundR);
     });
   });
+
+
+app.delete("/api/resume/:username", function(req, res){
+  db.Resume.destroy({ where: {username: req.params.username}}).then(function(toDelete){
+    res.json(toDelete);
+  });
+});
 };

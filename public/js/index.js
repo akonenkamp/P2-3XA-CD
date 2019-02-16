@@ -5,6 +5,7 @@ var $submitBtn = $("#submit");
 var $exampleList = $("#example-list");
 
 //var resInfo = $("#info");
+//Daniel - These are the references to data entry fields on the resume.handlebars file
 var resName = $("#username");
 var resEmail =$("#email");
 var resPhone = $("#phone");
@@ -184,11 +185,15 @@ var findResume = function(event){
   console.log("The Resume was found!!!");
   event.preventDefault();
 
-  API.getResume(resToFind.val().trim()).then(function(data){
-    console.log("this is noise!");
-    console.log("Sending: " + resToFind);
-    console.log( "    Getting: " + data.username);
+  API.getResume(resToFind.val()).then(function(data){
+    //console.log("this is noise!");
+    //console.log("Sending: " + resToFind);
+    //console.log( "    Getting: " + data.username);
     foundRes.empty();
+
+    if(!data){
+      foundRes.append("<p> Sorry, but that resume is not here");
+    } else{
     foundRes.append("<p><h6>" + data.username + "</h6></p>");
     foundRes.append("<p><h6>" + data.email + "</h6></p>");
     foundRes.append("<p><h6>" + data.phone + "</h6></p>");
@@ -200,6 +205,7 @@ var findResume = function(event){
     foundRes.append(data.employment);
     foundRes.append("<p><h3><u>References                                       </u></h3></p>");
     foundRes.append(data.refs);
+    }
   });
 };
 
