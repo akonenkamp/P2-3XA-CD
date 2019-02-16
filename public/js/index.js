@@ -1,3 +1,30 @@
+// //Nodemailer 
+// var nodemailer = require('nodemailer');
+// var hbs = require('nodemailer-express-handlebars')
+
+// var transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//       user: 'uwstudent7@gmail.com',
+//       pass: 'Password7!'   
+//      }
+// });
+
+// const mailOptions = {
+//   from: 'uwstudent7@gmail.com',
+//   to: 'Password7!',
+//   subject: 'Sending Email using Node.js',
+//   html: '<p> This is my resume</p>'
+// };
+
+// transporter.sendMail(mailOptions, function(eror, info){
+//   if (error) {
+//     console.log(error);
+//   }else {
+//     console.log('Email sent: ' + info.response);
+//   }
+// });
+
 // Get references to page elements
 var $exampleText = $("#example-text");
 var $exampleDescription = $("#example-description");
@@ -14,6 +41,7 @@ var resEmp = $("#employment");
 var resRefs = $("#refs");
 var buildRes = $("#build");
 var resBody = $("#display");
+var $sendEmailBtn = $("#send-email");
 
 var searchRes = $("#search-res");
 var resToFind = $("#res-name");
@@ -55,6 +83,12 @@ var API = {
   getResume: function(rName){
     return $.ajax({
       url: "api/resume/" + rName,
+      type: "GET",
+    });
+  },
+  sendEmail: function(rName){
+    return $.ajax({
+      url: "api/email/" + rName,
       type: "GET"
     });
   }
@@ -184,11 +218,13 @@ var findResume = function(event){
   console.log("The Resume was found!!!");
   event.preventDefault();
 
-  API.getResume(resToFind.val().trim()).then(function(data){
-    console.log("this is noise!");
-    console.log("Sending: " + resToFind);
-    console.log( "    Getting: " + data.username);
+  API.getResume(resToFind.val()).then(function(data){
+ 
     foundRes.empty();
+
+    if(!data){
+      foundRes.append("<p> Sorry, but that resume was not found. </p>");
+    } else{
     foundRes.append("<p><h6>" + data.username + "</h6></p>");
     foundRes.append("<p><h6>" + data.email + "</h6></p>");
     foundRes.append("<p><h6>" + data.phone + "</h6></p>");
@@ -200,14 +236,23 @@ var findResume = function(event){
     foundRes.append(data.employment);
     foundRes.append("<p><h3><u>References                                       </u></h3></p>");
     foundRes.append(data.refs);
+    }
   });
 };
 
+var handleEmailSend = function(event) {
+  API.sendEmail(resName.val().trim())
+}
+
 // Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
+
 $exampleList.on("click", ".delete", handleDeleteBtnClick);
 buildRes.on("click", buildResume);
 searchRes.on("click", findResume);
+
+$sendEmailBtn.on("click", handleEmailSend);
+
 /*$(".please-work").on("click", function(){
   console.log("this is noise!");
 });*/

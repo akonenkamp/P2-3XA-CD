@@ -3,10 +3,10 @@ module.exports = function(sequelize, DataTypes){
         username: DataTypes.TEXT,
         email: DataTypes.TEXT,
         phone: DataTypes.TEXT,
-        summary: DataTypes.STRING,
-        education: DataTypes.STRING,
-        employment: DataTypes.STRING,
-        refs: DataTypes.STRING
+        summary: DataTypes.TEXT('long'),
+        education: DataTypes.TEXT('long'),
+        employment: DataTypes.TEXT('long'),
+        refs: DataTypes.TEXT('long')
     });
     return Resume;
 };
